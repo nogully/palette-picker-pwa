@@ -1,0 +1,53 @@
+* {
+  font-family: 'Raleway', sans-serif;
+  background-color: #C5C3C6;
+}
+
+header, 
+main, 
+section,
+form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+}
+
+h1 {
+  color: #46494C;
+}
+
+main {
+}
+
+article {
+  background-color: #FFF;
+  border: 1px solid #444;
+  display: flex;
+  height: 180px;
+  padding: 20px;
+  margin: 0px;
+  width: 70px;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+form {
+  padding: 10px;
+  margin: 20px;
+  flex-direction: column;
+}
+
+input {
+  height: 1rem;
+  margin: 10px;
+}
+
+button, 
+select,
+.submit-button {
+  background-color: #FFF;
+  color: #444;
+  font-size: 1rem;
+}
