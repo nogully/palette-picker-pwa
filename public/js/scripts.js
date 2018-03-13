@@ -22,7 +22,7 @@ const loadPalette = () => {
 const loadProjects = async () => {
   const response = await fetch('/api/v1/projects');
   const projects = await response.json();
-  makeMiniPalette(name);
+  makeMiniPalette(projects[1].name);
   
 
 }
@@ -32,17 +32,17 @@ const makeMiniPalette = (name, colors) => {
     <article>
       <h4>${name}</h4>
       <svg>
-        <rect x="10" y="10" width="20" height="20" rx="15" ry="15" fill="#6495ED"/>
-        <rect x="10" y="10" width="20" height="20" rx="15" ry="15" fill="#FFFFFF"/>
-        <rect x="10" y="10" width="20" height="20" rx="15" ry="15" fill="#CCCCCC"/>
-        <rect x="10" y="10" width="20" height="20" rx="15" ry="15" fill="#444444"/>
-        <rect x="10" y="10" width="20" height="20" rx="15" ry="15" fill="#111111"/>
+        <rect width="20" height="20" rx="15" ry="15" fill="#6495ED"/>
+        <rect  width="20" height="20" rx="15" ry="15" fill="#FFFFFF"/>
+        <rect  width="20" height="20" rx="15" ry="15" fill="#CCCCCC"/>
+        <rect  width="20" height="20" rx="15" ry="15" fill="#444444"/>
+        <rect  width="20" height="20" rx="15" ry="15" fill="#111111"/>
       </svg>
     </article>
   `)
 }
 
-const findProjectPalettes = (id) => {
+const findProjectPalettes = async (id) => {
   const response = await fetch('/api/v1/palettes/project_id/:id');
   const palettes = response.json();
 }

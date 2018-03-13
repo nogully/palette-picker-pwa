@@ -35,6 +35,22 @@ app.get('/api/v1/projects', (req, res) => {
   res.send(projects)
 })
 
+app.post('/api/v1/palettes', (req, res) => {
+  const id = Date.now();
+  const { name, colors, project_id } = req.body;
+  const palette = Object.assign({}, {id, 
+                            name, 
+                            color1: palette[0],
+                            color2: palette[1], 
+                            color3: palette[2], 
+                            color4: palette[3], 
+                            color5: palette[4],
+                            project_id })
+
+  app.locals.palettes.push(palette)
+  response.status(201).json({id, name, project_id})
+})
+
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} server running on port 3000`)
 });
