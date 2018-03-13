@@ -57,6 +57,10 @@ img {
   width: 20px;
 }
 
-footer {
-  
+#project-section {
+  border-top: 1px solid #444;
+  flex-direction: column;
+}
+
+#projects {
 }

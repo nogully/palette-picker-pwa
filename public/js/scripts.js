@@ -19,6 +19,30 @@ const loadPalette = () => {
   $('#color5').css({ "background-color": `${colorArray[4]}` });
 }
 
-const loadProjects = () => {
+const loadProjects = async () => {
+  const response = await fetch('/api/v1/projects');
+  const projects = await response.json();
+  makeMiniPalette(name);
   
+
+}
+
+const makeMiniPalette = (name, colors) => {
+  $('#projects').append(`
+    <article>
+      <h4>${name}</h4>
+      <svg>
+        <rect x="10" y="10" width="20" height="20" rx="15" ry="15" fill="#6495ED"/>
+        <rect x="10" y="10" width="20" height="20" rx="15" ry="15" fill="#FFFFFF"/>
+        <rect x="10" y="10" width="20" height="20" rx="15" ry="15" fill="#CCCCCC"/>
+        <rect x="10" y="10" width="20" height="20" rx="15" ry="15" fill="#444444"/>
+        <rect x="10" y="10" width="20" height="20" rx="15" ry="15" fill="#111111"/>
+      </svg>
+    </article>
+  `)
+}
+
+const findProjectPalettes = (id) => {
+  const response = await fetch('/api/v1/palettes/project_id/:id');
+  const palettes = response.json();
 }
