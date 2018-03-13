@@ -27,16 +27,16 @@ const loadProjects = async () => {
 
 }
 
-const makeMiniPalette = (name, colors) => {
+const makeMiniPalette = (name, id, colors) => {
   $('#projects').append(`
     <article>
       <h4>${name}</h4>
-      <svg>
-        <rect width="20" height="20" rx="15" ry="15" fill="#6495ED"/>
-        <rect  width="20" height="20" rx="15" ry="15" fill="#FFFFFF"/>
-        <rect  width="20" height="20" rx="15" ry="15" fill="#CCCCCC"/>
-        <rect  width="20" height="20" rx="15" ry="15" fill="#444444"/>
-        <rect  width="20" height="20" rx="15" ry="15" fill="#111111"/>
+      <svg id=${id} xmlns="http://www.w3.org/2000/svg">
+        <rect x="00" width="20" height="20" rx="15" ry="15" fill="#6495ED"/>
+        <rect x="20" width="20" height="20" rx="15" ry="15" fill="#FFFFFF"/>
+        <rect x="40" width="20" height="20" rx="15" ry="15" fill="#CCCCCC"/>
+        <rect x="60" width="20" height="20" rx="15" ry="15" fill="#444444"/>
+        <rect x="80" width="20" height="20" rx="15" ry="15" fill="#111111"/>
       </svg>
     </article>
   `)
