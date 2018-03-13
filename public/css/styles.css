@@ -51,3 +51,12 @@ select,
   color: #444;
   font-size: 1rem;
 }
+
+img {
+  fill: #FFF;
+  width: 20px;
+}
+
+footer {
+  
+}

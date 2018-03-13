@@ -17,12 +17,22 @@ app.locals.palettes = [
     color3: '#DACC3E', 
     color4: '#BC2C1A', 
     color5: '#7D1538', 
-    project: 'awesome'}
+    project_id: 1 }
 ];
 
-app.get('/palettes', (req, res) => {
+app.locals.projects = [
+  { id: 1, name: 'my sweet project'}, 
+  { id: 2, name: 'another amazing project'}, 
+]
+
+app.get('/api/v1/palettes', (req, res) => {
   const palettes = app.locals.palettes;
   res.send(palettes)
+})
+
+app.get('/api/v1/projects', (req, res) => {
+  const projects = app.locals.projects;
+  res.send(projects)
 })
 
 app.listen(app.get('port'), () => {
