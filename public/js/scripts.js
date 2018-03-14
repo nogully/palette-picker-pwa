@@ -1,22 +1,41 @@
 $(document).ready(() => loadProjects())
 $('button').on('click', () => loadPalette());
+$('.swatch').on('click', '.fa-lock-open', () => freezeColor())
 
 const generateColors = () => {
-  let colorArray = []
+  let colorArray = [];
   for (let i = 0; i <= 5; i++) {
     colorArray.push('#'+(Math.random()*0xFFFFFF<<0).toString(16));
   }
   return colorArray;
-}
+};
 
 const loadPalette = () => {
   event.preventDefault();
   const colorArray = generateColors();
+
+  colorArray.forEach((color, index) => {
+    const frozenColors = currentFrozen();
+    if (!frozenColors.includes(color[index + 1] )) {
+      $(`#color[${index + 1}]`).css({ "background-color": `${color}` })
+    }
+    
+  })
+  
   $('#color1').css({ "background-color": `${colorArray[0]}` });
   $('#color2').css({ "background-color": `${colorArray[1]}` });
   $('#color3').css({ "background-color": `${colorArray[2]}` });
   $('#color4').css({ "background-color": `${colorArray[3]}` });
   $('#color5').css({ "background-color": `${colorArray[4]}` });
+}
+
+const freezeColor = () => {
+  $(this).closest('article').toggleClass('locked');
+  const id = $(this).closest('article').attr('id');
+}
+
+const currentFrozen = () => {
+  return $('.locked').attr('id');
 }
 
 const loadProjects = async () => {

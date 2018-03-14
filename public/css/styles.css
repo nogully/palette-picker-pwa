@@ -44,7 +44,7 @@ h1 {
   color: #444;
   font-family: 'Berkshire Swash', cursive;
   letter-spacing: 2px;
-  font-size: 6rem;
+  font-size: 5rem;
   padding: 0px;
   margin: 0px;
 }
@@ -120,7 +120,7 @@ select {
 }
 
 button {
-  font-size: 6rem;
+  font-size: 5rem;
   font-family: 'Berkshire Swash', cursive;
   height: auto;
   letter-spacing: 2px;
