@@ -35,6 +35,14 @@ app.get('/api/v1/projects', (req, res) => {
   res.send(projects)
 })
 
+app.get('/api/v1/projects/:id', (req, res) => {
+
+})
+
+app.get('/api/v1/projects/:id/palettes', (req, res) => {
+  
+})
+
 app.post('/api/v1/palettes', (req, res) => {
   const id = Date.now();
   const { name, colors, project_id } = req.body;
@@ -49,6 +57,10 @@ app.post('/api/v1/palettes', (req, res) => {
 
   app.locals.palettes.push(palette)
   response.status(201).json({id, name, project_id})
+})
+
+app.post('/api/v1/projects', (req, res) => {
+
 })
 
 app.listen(app.get('port'), () => {
