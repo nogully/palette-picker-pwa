@@ -3,40 +3,46 @@
 <head>
   <title>swatches</title>
   <link rel="stylesheet" type="text/css" href="./css/styles.css">
-  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Berkshire+Swash|Signika:300" rel="stylesheet">
   <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
 </head>
 <body>
-  <header>
-    <h1>swatches</h1>
-  </header>
+  <aside>
+    <article class="swatch" id="color1"><i class="fas fa-lock-open"></i></article>
+    <article class="swatch" id="color2"><i class="fas fa-lock-open"></i></article>
+    <article class="swatch" id="color3"><i class="fas fa-lock-open"></i></article>
+    <article class="swatch" id="color4"><i class="fas fa-lock-open"></i></article>
+    <article class="swatch" id="color5"><i class="fas fa-lock-open"></i></article>
+  </aside>
   <main>
-    <article id="color1"><i class="fas fa-lock-open"></i></article>
-    <article id="color2"><i class="fas fa-lock-open"></i></article>
-    <article id="color3"><i class="fas fa-lock-open"></i></article>
-    <article id="color4"><i class="fas fa-lock-open"></i></article>
-    <article id="color5"><i class="fas fa-lock-open"></i></article>
-  </main>
-  <form id="new-palette-form">
-    <button>generate new palette</button>
-    <div id="new-palette-wrapper">
-      <select>
-        <option>option 1</option>
-        <option>option 2</option>
-      </select>
-      <input type="text" name="new-palette" id="new-palette" placeholder="new palette name">
-      <input type="submit" name="save-palette" id="save-palette" value="save palette" class="submit-button">
+    <header>
+      <button>new</button>
+      <h1>swatches</h1>
+    </header>
+    <div id="section-wrapper">
+      <section id="palette-section">
+        
+        <form id="new-palette-form">
+          
+          <div id="new-palette-wrapper">
+            <select>
+            </select>
+            <input type="text" name="new-palette" id="new-palette" placeholder="new palette name">
+            <input type="submit" name="save-palette" id="save-palette" value="save palette" class="submit-button">
+          </div>
+        </form>
+      </section>  
+      <section id="project-section">
+        <form id="new-project-form">
+        <label for="new-project">create a new project: </label>
+        <input type="text" name="new-project" placeholder="new project name">
+        <input type="submit" name="new-project" value="save project" class="submit-button">
+      </form>
+        <h4>projects</h4>
+        <section id="projects"></section> 
+      </section>
     </div>
-  </form>
-  <form id="new-project-form">
-    <label for="new-project">create a new project: </label>
-    <input type="text" name="new-project" placeholder="new project name">
-    <input type="submit" name="new-project" value="save project" class="submit-button">
-  </form>
-  <section id="project-section">
-    <h4>projects</h4>
-    <section id="projects"></section> 
-  </section>
+  </main>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="./js/scripts.js"></script>
