@@ -2,6 +2,10 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 
+const environment = process.env.NODE_ENV || 'development';
+const configuration = require('./knexfile')[environment];
+const database = require('knex')(configuration);
+
 app.use(bodyParser.json());
 app.set('port', process.env.PORT || 3000); //environmental var of port in production
 
@@ -26,8 +30,63 @@ app.locals.projects = [
 ]
 
 app.get('/api/v1/palettes', (req, res) => {
-  const palettes = app.locals.palettes;
-  res.send(palettes)
+  database('palettes').select()
+    .then(palettes => {
+      res.status(200).json(palettes);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+})
+
+app.get('/api/v1/palettes/:id', (req, res) => {
+  database('palettes').where('id', req.params.id).select()
+    .then(palette => {
+      if (palette) {
+        res.status(200).json(palette)
+      } else
+      res.status(404).json({
+        error: `Could not find palette with id ${req.params.id}`
+      })
+    })
+    .catch(error => {
+      res.status(500).json({ error });
+    });
+})
+
+app.get('/api/v1/palettes/:id/colors', (req, res) => {
+  database('palettes').where('id', req.params.id).select()
+    .then(palette => {
+      if (palette) {
+        const colors = [ palette[0].color1, 
+                         palette[0].color2, 
+                         palette[0].color3, 
+                         palette[0].color4, 
+                         palette[0].color5
+                       ]
+        res.status(200).json(colors)
+      } else
+      res.status(404).json({
+        error: `Could not find palette with id ${req.params.id}`
+      })
+    })
+    .catch(error => {
+      res.status(500).json({ error });
+    });
+})
+
+app.post('/api/v1/palettes', (req, res) => {
+  const { name, colors, project_id } = req.body;
+  const palette = Object.assign({}, {id, 
+                            name, 
+                            color1: colors[0],
+                            color2: colors[1], 
+                            color3: colors[2], 
+                            color4: colors[3], 
+                            color5: colors[4],
+                            project_id })
+  app.locals.palettes.push(palette)
+  response.status(201).json({id, name, project_id})
 })
 
 app.get('/api/v1/projects', (req, res) => {
@@ -36,33 +95,31 @@ app.get('/api/v1/projects', (req, res) => {
 })
 
 app.get('/api/v1/projects/:id', (req, res) => {
-
+  database('projects').where('id', req.params.id).select()
+    .then(projects => {
+      if (projects.length) {
+        res.status(200).json(projects);
+      } else {
+        res.status(404).json({ 
+          error: `Could not find project with id ${req.params.id}`
+        });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({ error });
+    });
 })
 
 app.get('/api/v1/projects/:id/palettes', (req, res) => {
   
 })
 
-app.post('/api/v1/palettes', (req, res) => {
-  const id = Date.now();
-  const { name, colors, project_id } = req.body;
-  const palette = Object.assign({}, {id, 
-                            name, 
-                            color1: palette[0],
-                            color2: palette[1], 
-                            color3: palette[2], 
-                            color4: palette[3], 
-                            color5: palette[4],
-                            project_id })
 
-  app.locals.palettes.push(palette)
-  response.status(201).json({id, name, project_id})
-})
 
 app.post('/api/v1/projects', (req, res) => {
 
 })
 
 app.listen(app.get('port'), () => {
-  console.log(`${app.locals.title} server running on port 3000`)
+  console.log(`${app.locals.title} server running on port ${app.get('port')}`)
 });

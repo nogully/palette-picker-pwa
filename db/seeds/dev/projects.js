@@ -5,11 +5,11 @@ exports.seed = function(knex, Promise) {
   return knex('palettes').del() // delete all palettes first
     .then(() => knex('projects').del()) // delete all projects
 
-    // Now that we have a clean slate, we can re-insert our paper data
+    // Now that we have a clean slate, we can re-insert our project data
     .then(() => {
       return Promise.all([
         
-        // Insert a single paper, return the paper ID, insert 2 footnotes
+        // Insert a single project, return the project ID, insert 2 palettes
         knex('projects').insert({
           name: 'Magic Sparkles' }, 'id')
         .then(project => {
