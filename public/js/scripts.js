@@ -33,7 +33,7 @@ const loadProjects = async () => {
 const makeMiniPalette = (name, id, colors) => {
   $('#projects').append(`
     <article class="mini-palette" id=${id}>
-      <h4>${name}</h4>
+      <p>${name}</p>
       <div style="background-color:${colors[1]};">${colors[1]}</div>
     </article>
   `)

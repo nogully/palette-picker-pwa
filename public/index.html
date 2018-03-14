@@ -21,27 +21,28 @@
     </header>
     <div id="section-wrapper">
       <section id="palette-section">
-        
-        <form id="new-palette-form">
-          
-          <div id="new-palette-wrapper">
-            <select>
-            </select>
-            <input type="text" name="new-palette" id="new-palette" placeholder="new palette name">
-            <input type="submit" name="save-palette" id="save-palette" value="save palette" class="submit-button">
-          </div>
+
+        <form id="new-palette-form"> 
+        <h4>swatch set</h4>     
+          <!-- <div id="new-palette-wrapper"> -->
+            <input type="text" name="new-palette" id="new-palette" placeholder="name swatch set">
+            <label for="project-select">file under:</label>
+            <select name="project-select"></select>
+            <input type="submit" name="save-palette" id="save-palette" value="save swatches" class="submit-button">
+          <!-- </div> -->
         </form>
       </section>  
       <section id="project-section">
         <form id="new-project-form">
-        <label for="new-project">create a new project: </label>
-        <input type="text" name="new-project" placeholder="new project name">
-        <input type="submit" name="new-project" value="save project" class="submit-button">
-      </form>
-        <h4>projects</h4>
-        <section id="projects"></section> 
-      </section>
+          <h4>project</h4>
+          <input type="text" name="new-project" placeholder="new project name">
+          <input type="submit" name="new-project" value="save project" class="submit-button">
+        </form>
+      </section>  
     </div>
+    <section id="projects">
+      <h4>saved projects</h4>
+    </section>
   </main>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
