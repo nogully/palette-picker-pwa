@@ -29,19 +29,30 @@ const loadProjects = async () => {
   const response = await fetch('/api/v1/projects');
   const projects = await response.json();
   console.log(projects)
-  projects.forEach(project => {
-    makeMiniPalette(project.name, project.id, ['#444', '#CCC', '#BBB', '#555', '#EEE']);
+  projects.forEach( project => {
+    makeMiniPalette(project.name, project.id);
     $('select').append(`<option value="${project.name}">${project.name}</option>`)
   })
 }
 
-const makeMiniPalette = (name, id, colors) => {
+const makeMiniPalette = async (name, id) => {
+  const fetched = await fetch(`/api/v1/palettes/${id}`);
+  const palettes = await fetched.json();
+  palettes.map(palette => {
+    const colors = await getColors(palette.id);
+  })
   $('#projects').append(`
     <article class="mini-palette" id=${id}>
       <p>${name}</p>
-      <div style="background-color:${colors[1]};">${colors[1]}</div>
+      <div style="background-color:#CCC;">#CCC</div>
     </article>
   `)
+}
+
+const getColors = async (id) => {
+  const fetched = await fetch(`/api/v1/palettes/${id}/colors`);
+  const colors = await fetched.json();
+  return colors;
 }
 
 const findProjectPalettes = async (id) => {
