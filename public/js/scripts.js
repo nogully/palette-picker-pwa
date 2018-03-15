@@ -67,9 +67,7 @@ const makeMiniPalette = async (projectId) => {
   } catch (error) {
     console.log(error);
   }
-  
 }
-
 
 const getColors = async (id) => {
   const fetched = await fetch(`/api/v1/palettes/${id}/colors`);
