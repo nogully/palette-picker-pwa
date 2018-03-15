@@ -152,7 +152,6 @@ i {
   background: transparent;
   color: #444;
   text-shadow: 1px 1px #FFF;
-
 }
 
 section {
@@ -166,7 +165,6 @@ section {
 }
 
 .mini-palette {
-  height: 50px;
   width: 200px;
   display: flex;
   flex-direction: column;
@@ -176,7 +174,6 @@ section {
 }
 
 .mini-swatch-wrapper {
-  margin: 10px;
   display: flex;
   padding: 5px;
   justify-content: center;
