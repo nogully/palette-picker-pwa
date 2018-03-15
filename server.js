@@ -122,3 +122,5 @@ app.post('/api/v1/projects', (req, res) => {
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} server running on port ${app.get('port')}`)
 });
+
+module.exports = app;

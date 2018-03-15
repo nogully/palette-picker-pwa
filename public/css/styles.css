@@ -157,11 +157,36 @@ section {
 }
 
 #projects {
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 
 .mini-palette {
   height: 50px;
   width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 10px 20px;
+}
+
+.mini-swatch-wrapper {
+  margin: 10px;
+  display: flex;
+  padding: 5px;
+  justify-content: center;
+  align-items: center;
+}
+
+.mini-swatch {
+  width: 20px;
+  height: 20px;
+}
+
+p {
+  margin: 10px;
 }
 
 #color1 {
@@ -171,12 +196,15 @@ section {
 #color2 {
   background-color: #f37736;
 }
+
 #color3 {
   background-color: #fdf498;
 }
+
 #color4 {
   background-color: #7bc043;
 }
+
 #color5 {
   background-color: #0392cf;
 }
