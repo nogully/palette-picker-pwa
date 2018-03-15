@@ -13,22 +13,6 @@ app.use(express.static('public'));
 
 app.locals.title = 'Palette Picker';
 
-app.locals.palettes = [
-  { id: 12345, 
-    name: 'favorite', 
-    color1: '#7FB7BE', 
-    color2: '#D3F3EE', 
-    color3: '#DACC3E', 
-    color4: '#BC2C1A', 
-    color5: '#7D1538', 
-    project_id: 1 }
-];
-
-app.locals.projects = [
-  { id: 1, name: 'my sweet project'}, 
-  { id: 2, name: 'another amazing project'}, 
-]
-
 app.get('/api/v1/palettes', (req, res) => {
   database('palettes').select()
     .then(palettes => {
@@ -90,8 +74,13 @@ app.post('/api/v1/palettes', (req, res) => {
 })
 
 app.get('/api/v1/projects', (req, res) => {
-  const projects = app.locals.projects;
-  res.send(projects)
+  database('projects').select()
+    .then(projects => {
+      res.status(200).json(projects);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
 })
 
 app.get('/api/v1/projects/:id', (req, res) => {
