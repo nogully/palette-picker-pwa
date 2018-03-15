@@ -4,6 +4,7 @@ $('.swatch').on('click', '.fas', function () {
   $(this).parent().toggleClass('locked');
   $(this).toggleClass('fa-lock-open').toggleClass('fa-lock');
 })
+$('.submit-button').on('click', () => saveProject())
 
 const generateColors = () => {
   let colorArray = [];
@@ -28,39 +29,44 @@ const loadPalette = () => {
 const loadProjects = async () => {
   const response = await fetch('/api/v1/projects');
   const projects = await response.json();
-  console.log(projects)
   projects.forEach( project => {
-    makeMiniPalette(project.name, project.id);
+    makeMiniPalette(project.id);
     $('select').append(`<option value="${project.name}">${project.name}</option>`)
+    $('#projects').append(`
+    <article class="mini-palette" id=${project.id}>
+      <p>${project.name}</p>
+    </article>
+  `)
   })
 }
 
-const makeMiniPalette = async (name, id) => {
-  const fetched = await fetch(`/api/v1/projects/${id}/palettes`);
-  const palettes = await fetched.json();
-  const colorArrays = palettes.reduce( (array, palette) => {
-    array.push(Object.values(Object.keys(palette).filter(key => key.includes('color'))).map(key => palette[key]))
-    return array;
-  }, []);
-  console.log(colorArrays)
-  $('#projects').append(`
-    <article class="mini-palette" id=${id}>
-      <p>${name}</p>
-    </article>
-  `)
-  colorArrays.forEach((array, index) => {
-    $(`#${id}`).append(`
-      <div class="mini-swatch-wrapper">
-        <div class="mini-swatch" style="background-color:${array[0]};"></div>
-        <div class="mini-swatch" style="background-color:${array[1]};"></div>
-        <div class="mini-swatch" style="background-color:${array[2]};"></div>
-        <div class="mini-swatch" style="background-color:${array[3]};"></div>
-        <div class="mini-swatch" style="background-color:${array[4]};"></div>
-        <p>${palettes[index].name}</p>
-      </div>
-    `)
-  })
-  
+const makeMiniPalette = async (projectId) => {
+  try {
+    const fetched = await fetch(`/api/v1/projects/${projectId}/palettes`);
+    if (fetched.status === 200) {
+      const palettes = await fetched.json();
+      const colorArrays = palettes.reduce( (array, palette) => {
+        array.push(Object.values(Object.keys(palette).filter(key => key.includes('color'))).map(key => palette[key]))
+        return array;
+      }, []);
+      colorArrays.forEach((array, index) => {
+        $(`#${projectId}`).append(`
+          <div class="mini-swatch-wrapper">
+            <div class="mini-swatch" style="background-color:${array[0]};"></div>
+            <div class="mini-swatch" style="background-color:${array[1]};"></div>
+            <div class="mini-swatch" style="background-color:${array[2]};"></div>
+            <div class="mini-swatch" style="background-color:${array[3]};"></div>
+            <div class="mini-swatch" style="background-color:${array[4]};"></div>
+            <p>${palettes[index].name}</p>
+          </div>
+        `)
+      })
+    } else {
+      throw new Error('could not find palettes for that project')
+    }
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 const getColors = async (id) => {
@@ -72,4 +78,25 @@ const getColors = async (id) => {
 const findProjectPalettes = async (id) => {
   const response = await fetch('/api/v1/palettes/project_id/:id');
   const palettes = await response.json();
+}
+
+const saveProject = async () => {
+  event.preventDefault();
+  const name = $('.project-name').val();
+  const response = await fetch('/api/v1/projects', {
+    method: 'POST',
+    body: JSON.stringify( {name} ), 
+    headers: { 'Content-Type': 'application/json' }
+  })
+  const projectId = await response.json();
+  addProject(name, projectId.id);
+  $('.project-name').val('');
+}
+
+const addProject = (name, id) => {
+  $('#projects').append(`
+    <article class="mini-palette" id=${id}>
+      <p>${name}</p>
+    </article>
+  `)
 }
