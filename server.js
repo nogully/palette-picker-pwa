@@ -100,10 +100,20 @@ app.get('/api/v1/projects/:id', (req, res) => {
 })
 
 app.get('/api/v1/projects/:id/palettes', (req, res) => {
-  
+  database('palettes').where('project_id', req.params.id).select()
+    .then(palettes => {
+      if (palettes.length) {
+        res.status(200).json(palettes);
+      } else {
+        res.status(404).json({ 
+          error: `Could not find palettes for a project_id ${req.params.id}`
+        });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({ error });
+    });
 })
-
-
 
 app.post('/api/v1/projects', (req, res) => {
 

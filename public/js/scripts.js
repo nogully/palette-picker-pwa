@@ -36,9 +36,9 @@ const loadProjects = async () => {
 }
 
 const makeMiniPalette = async (name, id) => {
-  const fetched = await fetch(`/api/v1/palettes/${id}`);
+  const fetched = await fetch(`/api/v1/projects/${id}/palettes`);
   const palettes = await fetched.json();
-  palettes.map(palette => {
+  const arrays = palettes.map(async palette => {
     const colors = await getColors(palette.id);
   })
   $('#projects').append(`
@@ -57,5 +57,5 @@ const getColors = async (id) => {
 
 const findProjectPalettes = async (id) => {
   const response = await fetch('/api/v1/palettes/project_id/:id');
-  const palettes = response.json();
+  const palettes = await response.json();
 }
