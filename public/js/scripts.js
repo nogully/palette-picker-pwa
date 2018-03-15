@@ -38,16 +38,37 @@ const loadProjects = async () => {
 const makeMiniPalette = async (name, id) => {
   const fetched = await fetch(`/api/v1/projects/${id}/palettes`);
   const palettes = await fetched.json();
-  const arrays = palettes.map(async palette => {
-    const colors = await getColors(palette.id);
-  })
+  const colorArrays = palettes.reduce( (array, palette) => {
+    array = Object.values(Object.keys(palette).filter(key => key.includes('color'))).map(key => palette[key])
+    return array;
+  }, []);
+  console.log(colorArrays)
   $('#projects').append(`
     <article class="mini-palette" id=${id}>
       <p>${name}</p>
-      <div style="background-color:#CCC;">#CCC</div>
     </article>
   `)
+  colorArrays.forEach((array) => {
+    $('article').append(`
+      <div style="background-color:${array[0]};">${array[0]}</div>
+      <div style="background-color:${array[1]};">${array[1]}</div>
+      <div style="background-color:${array[2]};">${array[2]}</div>
+      <div style="background-color:${array[3]};">${array[3]}</div>
+      <div style="background-color:${array[4]};">${array[4]}</div>
+    `)
+  })
+  
 }
+
+// const innerPalette = (colors) => {
+//   return `
+//     <div style="background-color:${colors[0]};">${colors[0]}</div>
+//     <div style="background-color:${colors[1]};">${colors[1]}</div>
+//     <div style="background-color:${colors[2]};">${colors[2]}</div>
+//     <div style="background-color:${colors[3]};">${colors[3]}</div>
+//     <div style="background-color:${colors[4]};">${colors[4]}</div>
+//   `
+// }
 
 const getColors = async (id) => {
   const fetched = await fetch(`/api/v1/palettes/${id}/colors`);
