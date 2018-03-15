@@ -29,7 +29,6 @@ const loadPalette = () => {
 const loadProjects = async () => {
   const response = await fetch('/api/v1/projects');
   const projects = await response.json();
-  console.log(projects)
   projects.forEach( project => {
     makeMiniPalette(project.name, project.id);
     $('select').append(`<option value="${project.name}">${project.name}</option>`)
@@ -74,6 +73,13 @@ const findProjectPalettes = async (id) => {
   const palettes = await response.json();
 }
 
-const saveProject = () => {
-  
+const saveProject = async () => {
+  event.preventDefault();
+  const title = $('.project-name').val();
+  const response = await fetch('/api/v1/projects', {
+    method: 'POST',
+    body: JSON.stringify({ title })
+  })
+  const projectId = await response.json();
+  console.log(projectId)
 }

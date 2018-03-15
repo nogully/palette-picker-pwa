@@ -117,18 +117,17 @@ app.get('/api/v1/projects/:id/palettes', (req, res) => {
 
 app.post('/api/v1/projects', (req, res) => {
   const project = request.body;
-
-  for (let requiredParameter of ['title', 'author']) {
-    if (!paper[requiredParameter]) {
+  for (let requiredParameter of ['name']) {
+    if (!project[requiredParameter]) {
       return response
         .status(422)
-        .send({ error: `Expected format: { title: <String>, author: <String> }. You're missing a "${requiredParameter}" property.` });
+        .send({ error: `Expected format: { name: <String> }. You're missing a "${requiredParameter}" property.` });
     }
   }
 
-  database('papers').insert(paper, 'id')
-    .then(paper => {
-      response.status(201).json({id: paper[0]})
+  database('projects').insert(project, 'id')
+    .then(project => {
+      response.status(201).json({id: project[0]})
     })
     .catch(error => {
       response.status(500).json({ error });
