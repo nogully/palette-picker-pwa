@@ -4,6 +4,7 @@ $('.swatch').on('click', '.fas', function () {
   $(this).parent().toggleClass('locked');
   $(this).toggleClass('fa-lock-open').toggleClass('fa-lock');
 })
+$('.submit-button').on('click', () => saveProject())
 
 const generateColors = () => {
   let colorArray = [];
@@ -60,7 +61,6 @@ const makeMiniPalette = async (name, id) => {
       </div>
     `)
   })
-  
 }
 
 const getColors = async (id) => {
@@ -72,4 +72,8 @@ const getColors = async (id) => {
 const findProjectPalettes = async (id) => {
   const response = await fetch('/api/v1/palettes/project_id/:id');
   const palettes = await response.json();
+}
+
+const saveProject = () => {
+  
 }
