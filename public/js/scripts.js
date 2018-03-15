@@ -75,10 +75,11 @@ const findProjectPalettes = async (id) => {
 
 const saveProject = async () => {
   event.preventDefault();
-  const title = $('.project-name').val();
+  const name = $('.project-name').val();
   const response = await fetch('/api/v1/projects', {
     method: 'POST',
-    body: JSON.stringify({ title })
+    body: JSON.stringify( {name} ), 
+    headers: { 'Content-Type': 'application/json' }
   })
   const projectId = await response.json();
   console.log(projectId)

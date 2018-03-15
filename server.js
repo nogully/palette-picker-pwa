@@ -115,7 +115,7 @@ app.get('/api/v1/projects/:id/palettes', (req, res) => {
     });
 })
 
-app.post('/api/v1/projects', (req, res) => {
+app.post('/api/v1/projects', (request, response) => {
   const project = request.body;
   for (let requiredParameter of ['name']) {
     if (!project[requiredParameter]) {
@@ -124,7 +124,6 @@ app.post('/api/v1/projects', (req, res) => {
         .send({ error: `Expected format: { name: <String> }. You're missing a "${requiredParameter}" property.` });
     }
   }
-
   database('projects').insert(project, 'id')
     .then(project => {
       response.status(201).json({id: project[0]})
