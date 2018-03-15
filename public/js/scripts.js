@@ -25,14 +25,7 @@ const loadPalette = () => {
     if ( !$(swatch).is('.locked') ) {
       $(swatch).css({ "background-color": `${colorArray[index + 1]}` })
     }
-    
   })
-  
-  // $('#color1').css({ "background-color": `${colorArray[0]}` });
-  // $('#color2').css({ "background-color": `${colorArray[1]}` });
-  // $('#color3').css({ "background-color": `${colorArray[2]}` });
-  // $('#color4').css({ "background-color": `${colorArray[3]}` });
-  // $('#color5').css({ "background-color": `${colorArray[4]}` });
 }
 
 const freezeColor = (event) => {
