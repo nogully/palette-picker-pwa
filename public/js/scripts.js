@@ -39,7 +39,7 @@ const makeMiniPalette = async (name, id) => {
   const fetched = await fetch(`/api/v1/projects/${id}/palettes`);
   const palettes = await fetched.json();
   const colorArrays = palettes.reduce( (array, palette) => {
-    array = Object.values(Object.keys(palette).filter(key => key.includes('color'))).map(key => palette[key])
+    array.push(Object.values(Object.keys(palette).filter(key => key.includes('color'))).map(key => palette[key]))
     return array;
   }, []);
   console.log(colorArrays)
