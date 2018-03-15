@@ -1,6 +1,11 @@
 $(document).ready(() => loadProjects())
 $('button').on('click', () => loadPalette());
-$('.swatch').on('click', '.fa-lock-open', () => freezeColor())
+
+$('article').on('click', () => currentFrozen())
+$('.swatch').on('click', '.fas', function () {
+  $(this).parent().toggleClass('locked');
+  $(this).toggleClass('fa-lock-open').toggleClass('fa-lock');
+})
 
 const generateColors = () => {
   let colorArray = [];
@@ -29,13 +34,15 @@ const loadPalette = () => {
   $('#color5').css({ "background-color": `${colorArray[4]}` });
 }
 
-const freezeColor = () => {
-  $(this).closest('article').toggleClass('locked');
-  const id = $(this).closest('article').attr('id');
+const freezeColor = (event) => {
+  console.log('freezeColor')
+  const element = event.target;
+  element.parent().find('article').toggleClass('locked');
+  console.log(event.target.closest('article'))
 }
 
 const currentFrozen = () => {
-  return $('.locked').attr('id');
+  return $('.locked').toArray();
 }
 
 const loadProjects = async () => {
