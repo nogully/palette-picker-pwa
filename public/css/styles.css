@@ -171,6 +171,7 @@ section {
   justify-content: flex-start;
   align-items: flex-start;
   margin: 10px 20px;
+  background-color: #fff;
 }
 
 .mini-swatch-wrapper {
@@ -185,8 +186,8 @@ section {
   height: 20px;
 }
 
-p {
-  margin: 10px;
+p, h3 {
+  margin: 5px;
 }
 
 #color1 {
