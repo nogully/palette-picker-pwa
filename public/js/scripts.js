@@ -18,20 +18,21 @@ const generateColors = () => {
 const loadPalette = () => {
   event.preventDefault();
   const colorArray = generateColors();
-
-  colorArray.forEach((color, index) => {
-    const frozenColors = currentFrozen();
-    if (!frozenColors.includes(color[index + 1] )) {
-      $(`#color[${index + 1}]`).css({ "background-color": `${color}` })
+  const frozenColors = currentFrozen();
+  const swatches = $('.swatch').toArray();
+  swatches.forEach((swatch, index) => {
+    console.log(swatch.id)
+    if ( !$(swatch).is('.locked') ) {
+      $(swatch).css({ "background-color": `${colorArray[index + 1]}` })
     }
     
   })
   
-  $('#color1').css({ "background-color": `${colorArray[0]}` });
-  $('#color2').css({ "background-color": `${colorArray[1]}` });
-  $('#color3').css({ "background-color": `${colorArray[2]}` });
-  $('#color4').css({ "background-color": `${colorArray[3]}` });
-  $('#color5').css({ "background-color": `${colorArray[4]}` });
+  // $('#color1').css({ "background-color": `${colorArray[0]}` });
+  // $('#color2').css({ "background-color": `${colorArray[1]}` });
+  // $('#color3').css({ "background-color": `${colorArray[2]}` });
+  // $('#color4').css({ "background-color": `${colorArray[3]}` });
+  // $('#color5').css({ "background-color": `${colorArray[4]}` });
 }
 
 const freezeColor = (event) => {
@@ -48,6 +49,7 @@ const currentFrozen = () => {
 const loadProjects = async () => {
   const response = await fetch('/api/v1/projects');
   const projects = await response.json();
+  console.log(projects)
   projects.forEach(project => {
     makeMiniPalette(project.name, project.id, ['#444', '#CCC', '#BBB', '#555', '#EEE']);
     $('select').append(`<option value="${project.name}">${project.name}</option>`)
