@@ -23,7 +23,6 @@ exports.seed = function(knex, Promise) {
               color5: '#859208' }
           ])
         })
-        .then(() => console.log('Seeding complete!'))
         .catch(error => console.log(`Error seeding data: ${error}`))
       ]) 
     })

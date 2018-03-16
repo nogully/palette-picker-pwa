@@ -65,4 +65,61 @@ describe('API Routes', () => {
     });
   });
 
+  describe('POST /api/v1/projects', () => {
+    it('should create a new project', () => {
+      return chai.request(server)
+      .post('/api/v1/projects') 
+      .send({             
+        name: 'Lisa Frank Fan Page'
+      })
+      .then(response => {
+        response.should.have.status(201);
+        response.body.should.be.a('object');
+        response.body.should.have.property('name');
+        response.body.name.should.equal('Lisa Frank Fan Page');
+      })
+      .catch(err => {
+        throw err;
+      });
+    });
+  });
+
+  describe('GET /api/v1/palettes', () => {
+    it('should return all of the palettes', () => {
+      return chai.request(server)
+      .get('/api/v1/palettes')
+      .then(response => {
+        response.should.have.status(200);
+        response.should.be.json;
+        response.body.should.be.a('array');
+        response.body.length.should.equal(2);
+        response.body[0].should.have.property('name');
+      })
+      .catch(err => {
+        throw err;
+      });
+    });
+  });
+
+  describe('POST /api/v1/palettes', () => {
+    it('should create a new palette', () => {
+      return chai.request(server)
+      .post('/api/v1/palettes') 
+      .send({             
+        name: 'Sad Testing Face', 
+        colors: ['#DCDCDD', '#C5C3C6', '#46494C', '#4C5C68', '#1985A1'], 
+        project_id: 1
+      })
+      .then(response => {
+        response.should.have.status(201);
+        response.body.should.be.a('object');
+        response.body.should.have.property('name');
+        response.body.name.should.equal('Sad Testing Face');
+      })
+      .catch(err => {
+        throw err;
+      });
+    });
+  });
+
 });
