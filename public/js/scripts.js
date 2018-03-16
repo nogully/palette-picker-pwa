@@ -10,6 +10,11 @@ $('#projects').on('click', '.mini-swatch-wrapper', function () {
   const palette = $(this).attr('array');
   loadSwatches(palette.split(','));
 })
+$('#projects').on('click', '.fa-trash-alt', function () {
+  const paletteId = $(this).parent().attr('id');
+  removePalette(paletteId);
+  $(this).parent().remove();
+})
 
 const generateColors = () => {
   let colorArray = [];
@@ -83,11 +88,6 @@ const getColors = async (id) => {
   return colors;
 }
 
-const findProjectPalettes = async (id) => {
-  const response = await fetch('/api/v1/palettes/project_id/:id');
-  const palettes = await response.json();
-}
-
 const saveProject = async () => {
   event.preventDefault();
   const name = $('.project-name').val();
@@ -143,6 +143,20 @@ const sendPaletteToDb = async (colors) => {
     } catch (error) {
       console.log(error);
     }
+  }
+}
+
+const removePalette = async (id) => {
+  try {
+    const response = await fetch(`/api/v1/palettes/${id}`, {
+      method: 'DELETE', 
+      body: JSON.stringify({ id }), 
+      headers: { 'Content-Type': 'application/json'}
+    })
+    const result = await response.json();
+    console.log(result)
+  } catch (error) {
+    console.log(error);
   }
 }
 
