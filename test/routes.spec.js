@@ -80,6 +80,17 @@ describe('API Routes', () => {
         throw err;
       });
     });
+
+    it('should return an error 404 if it can\'t find palettes for that project', () => {
+      return chai.request(server)
+        .get('/api/v1/projects/3/palettes')
+        .then(response => {
+          response.should.have.status(404)
+        })
+        .catch( error => {
+          throw error;
+        })
+    })
   });
 
   describe('POST /api/v1/projects', () => {
@@ -99,6 +110,19 @@ describe('API Routes', () => {
         throw err;
       });
     });
+
+    it('should return status 422 if missing params in the body', () => {
+      return chai.request(server)
+        .post('/api/v1/projects')
+        .send({ title: 'Louisa and Robbie Fanclub' })
+        .then(response => {
+          response.should.have.status(422)
+          response.body.error.should.equal("Expected format: { name: <String> }. You\'re missing a name.")
+        })
+        .catch( error => {
+          throw error
+        })
+    })
   });
 
   describe('GET /api/v1/palettes', () => {
@@ -137,6 +161,20 @@ describe('API Routes', () => {
         throw err;
       });
     });
+
+    it('should return status 422 if missing params in the body', () => {
+      return chai.request(server)
+        .post('/api/v1/palettes')
+        .send({ name: 'Louisa and Robbie Fanclub', 
+                colors: ['#DCDCDD', '#C5C3C6', '#46494C', '#4C5C68', '#1985A1'] })
+        .then(response => {
+          response.should.have.status(422)
+          response.body.error.should.equal('Expected format: { name: <String>, colors: <Array>, project_id: <Number> }. You\'re missing a "project_id" property.')
+        })
+        .catch( error => {
+          throw error
+        })
+    })
   });
 
   describe('GET /api/v1/palettes/:id', () => {
@@ -155,6 +193,17 @@ describe('API Routes', () => {
         throw err;
       });
     });
+
+    it('should return an error 404 if it can\'t find a palette with that id', () => {
+      return chai.request(server)
+        .get('/api/v1/palettes/9')
+        .then(response => {
+          response.should.have.status(404)
+        })
+        .catch( error => {
+          throw error;
+        })
+    })
   });
 
   describe('DELETE /api/v1/palettes/:id', () => {
@@ -172,6 +221,18 @@ describe('API Routes', () => {
         throw err;
       });
     });
+
+    it('should return an error 404 if it can\'t find a palette with that id', () => {
+      return chai.request(server)
+        .get('/api/v1/palettes/9')
+        .then(response => {
+          response.should.have.status(404);
+          response.body.error.should.equal('Could not find palette with id 9')
+        })
+        .catch( error => {
+          throw error;
+        })
+    })
   });
 
 });

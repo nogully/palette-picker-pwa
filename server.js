@@ -26,12 +26,13 @@ app.get('/api/v1/palettes', (req, res) => {
 app.get('/api/v1/palettes/:id', (req, res) => {
   database('palettes').where('id', req.params.id).select()
     .then(palette => {
-      if (palette) {
+      if (palette.length) {
         res.status(200).json(palette)
-      } else
-      res.status(404).json({
-        error: `Could not find palette with id ${req.params.id}`
-      })
+      } else {
+        res.status(404).json({
+          error: `Could not find palette with id ${req.params.id}`
+        })
+      }
     })
     .catch(error => {
       res.status(500).json({ error });
@@ -68,7 +69,13 @@ app.post('/api/v1/palettes', (request, response) => {
 app.delete('/api/v1/palettes/:id', (request, response) => {
   database('palettes').where('id', request.params.id).del()
     .then(id => {
-      response.status(202).json({id})
+      if (id) {
+        response.status(202).json({ id })
+      } else {
+        response.status(404).json({
+          error: `Could not find palette with id ${request.params.id}`
+        })
+      }
     })
     .catch(error => {
       response.status(500).json({ error });
