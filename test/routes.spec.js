@@ -35,18 +35,19 @@ describe('Client Routes', () => {
 });
 
 describe('API Routes', () => {
-  beforeEach( done => {
+  beforeEach( (done) => {
     database.migrate.rollback()
       .then( () => {
         database.migrate.latest()
       .then( () => {
-         return database.seed.run()
+        return database.seed.run()
         .then( () => {
-          done()
+          done();
         })
       })
-   })
-  })
+    })
+  });
+
   describe('GET /api/v1/projects', () => {
     it('should return all of the projects', () => {
       return chai.request(server)
