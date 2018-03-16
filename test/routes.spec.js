@@ -17,6 +17,17 @@ describe('Client Routes', () => {
       throw err;
     });
   });
+
+  it('should return a 404 for a route that does not exist', () => {
+    return chai.request(server)
+    .get('/sad')
+    .then(response => {
+      response.should.have.status(404);
+    })
+    .catch(err => {
+      throw err;
+    });
+  });
 });
 
 describe('API Routes', () => {
