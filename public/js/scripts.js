@@ -10,6 +10,11 @@ $('#projects').on('click', '.mini-swatch-wrapper', function () {
   const palette = $(this).attr('array');
   loadSwatches(palette.split(','));
 })
+$('#projects').on('click', '.fa-trash-alt', function () {
+  const paletteId = $(this).parent().attr('id');
+  removePalette(paletteId);
+  $(this).parent().remove();
+})
 
 const generateColors = () => {
   let colorArray = [];
@@ -59,6 +64,7 @@ const makeMiniPalette = async (projectId) => {
       colorArrays.forEach((array, index) => {
         $(`#${projectId}.mini-palette`).append(`
           <div class="mini-swatch-wrapper" id="${palettes[index].id}" array="${array}">
+            <i class="far fa-trash-alt"></i>
             <div class="mini-swatch" style="background-color:${array[0]};"></div>
             <div class="mini-swatch" style="background-color:${array[1]};"></div>
             <div class="mini-swatch" style="background-color:${array[2]};"></div>
@@ -80,11 +86,6 @@ const getColors = async (id) => {
   const fetched = await fetch(`/api/v1/palettes/${id}/colors`);
   const colors = await fetched.json();
   return colors;
-}
-
-const findProjectPalettes = async (id) => {
-  const response = await fetch('/api/v1/palettes/project_id/:id');
-  const palettes = await response.json();
 }
 
 const saveProject = async () => {
@@ -142,6 +143,20 @@ const sendPaletteToDb = async (colors) => {
     } catch (error) {
       console.log(error);
     }
+  }
+}
+
+const removePalette = async (id) => {
+  try {
+    const response = await fetch(`/api/v1/palettes/${id}`, {
+      method: 'DELETE', 
+      body: JSON.stringify({ id }), 
+      headers: { 'Content-Type': 'application/json'}
+    })
+    const result = await response.json();
+    console.log(result)
+  } catch (error) {
+    console.log(error);
   }
 }
 

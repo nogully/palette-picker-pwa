@@ -86,6 +86,16 @@ app.post('/api/v1/palettes', (request, response) => {
     })
 })
 
+app.delete('/api/v1/palettes/:id', (request, response) => {
+  database('palettes').where('id', request.params.id).del()
+    .then(id => {
+      response.status(202).json({id})
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    })
+})
+
 app.get('/api/v1/projects', (req, res) => {
   database('projects').select()
     .then(projects => {
