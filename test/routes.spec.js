@@ -65,6 +65,23 @@ describe('API Routes', () => {
     });
   });
 
+  describe('GET /api/v1/projects/:id/palettes', () => {
+    it('should return all of the palettes for a given project', () => {
+      return chai.request(server)
+      .get('/api/v1/projects/1/palettes')
+      .then(response => {
+        response.should.have.status(200);
+        response.should.be.json;
+        response.body.should.be.a('array');
+        response.body.length.should.equal(2);
+        response.body[0].should.have.property('name');
+      })
+      .catch(err => {
+        throw err;
+      });
+    });
+  });
+
   describe('POST /api/v1/projects', () => {
     it('should create a new project', () => {
       return chai.request(server)
@@ -115,6 +132,41 @@ describe('API Routes', () => {
         response.body.should.be.a('object');
         response.body.should.have.property('name');
         response.body.name.should.equal('Sad Testing Face');
+      })
+      .catch(err => {
+        throw err;
+      });
+    });
+  });
+
+  describe('GET /api/v1/palettes/:id', () => {
+    it('should return the palette with given id', () => {
+      return chai.request(server)
+      .get('/api/v1/palettes/1')
+      .then(response => {
+        response.should.have.status(200);
+        response.should.be.json;
+        response.body.should.be.a('array');
+        response.body.length.should.equal(1);
+        response.body[0].should.have.property('name');
+        response.body[0].name.should.equal('Unicorns');
+      })
+      .catch(err => {
+        throw err;
+      });
+    });
+  });
+
+  describe('DELETE /api/v1/palettes/:id', () => {
+    it('should delete the palette with given id', () => {
+      return chai.request(server)
+      .delete('/api/v1/palettes/2')
+      .then(response => {
+        response.should.have.status(202);
+        response.should.be.json;
+        response.body.should.be.a('object');
+        response.body.should.have.property('id');
+        response.body.id.should.equal(1);
       })
       .catch(err => {
         throw err;
