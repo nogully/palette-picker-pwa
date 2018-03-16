@@ -1,24 +1,24 @@
-$(document).ready(() => loadProjects())
+$(document).ready(() => loadProjects());
 $('button').on('click', () => loadPalette());
 $('.swatch').on('click', '.fas', function () {
   $(this).parent().toggleClass('locked');
   $(this).toggleClass('fa-lock-open').toggleClass('fa-lock');
-})
+});
 $('#save-project').on('click', () => saveProject());
 $('#save-palette').on('click', () => addPalette());
 $('#projects').on('click', '.mini-swatch-wrapper', function () {
   const palette = $(this).attr('array');
   loadSwatches(palette.split(','));
-})
+});
 $('#projects').on('click', '.fa-trash-alt', function () {
   const paletteId = $(this).parent().attr('id');
   removePalette(paletteId);
   $(this).parent().remove();
-})
+});
 
 const generateColors = () => {
   let colorArray = [];
-  for (let i = 0; i <= 5; i++) {
+  for (let index = 0; index <= 5; index++) {
     colorArray.push('#'+(Math.random()*0xFFFFFF<<0).toString(16));
   }
   return colorArray;
@@ -27,30 +27,29 @@ const generateColors = () => {
 const loadPalette = () => {
   event.preventDefault();
   const colorArray = generateColors();
-  const frozenColors = $('.locked').toArray();
   const swatches = $('.swatch').toArray();
   swatches.forEach((swatch, index) => {
     if ( !$(swatch).is('.locked') ) {
-      $(swatch).css({ "background-color": `${colorArray[index + 1]}` })
-      $(swatch).find('p').text(`${colorArray[index + 1]}`)
+      $(swatch).css({ "background-color": `${colorArray[index + 1]}` });
+      $(swatch).find('p').text(`${colorArray[index + 1]}`);
     }
-  })
+  });
   $('#new-palette').val('');
-}
+};
 
 const loadProjects = async () => {
   const response = await fetch('/api/v1/projects');
   const projects = await response.json();
   projects.forEach( project => {
     makeMiniPalette(project.id);
-    $('select').append(`<option value="${project.id}" id=>${project.name}</option>`)
+    $('select').append(`<option value="${project.id}" id=>${project.name}</option>`);
     $('#projects').append(`
       <article class="mini-palette" id=${project.id}>
         <h3>${project.name}</h3>
       </article>
-    `)
-  })
-}
+    `);
+  });
+};
 
 const makeMiniPalette = async (projectId) => {
   try {
@@ -58,7 +57,7 @@ const makeMiniPalette = async (projectId) => {
     if (fetched.status === 200) {
       const palettes = await fetched.json();
       const colorArrays = palettes.reduce( (array, palette) => {
-        array.push(Object.values(Object.keys(palette).filter(key => key.includes('color'))).map(key => palette[key]))
+        array.push(Object.values(Object.keys(palette).filter(key => key.includes('color'))).map(key => palette[key]));
         return array;
       }, []);
       colorArrays.forEach((array, index) => {
@@ -72,21 +71,15 @@ const makeMiniPalette = async (projectId) => {
             <div class="mini-swatch" style="background-color:${array[4]};"></div>
             <p>${palettes[index].name}</p>
           </div>
-        `)
-      })
+        `);
+      });
     } else {
-      throw new Error('could not find palettes for that project')
+      throw new Error('could not find palettes for that project');
     }
   } catch (error) {
-    console.log(error);
+    throw error;
   }
-}
-
-const getColors = async (id) => {
-  const fetched = await fetch(`/api/v1/palettes/${id}/colors`);
-  const colors = await fetched.json();
-  return colors;
-}
+};
 
 const saveProject = async () => {
   event.preventDefault();
@@ -97,21 +90,21 @@ const saveProject = async () => {
       method: 'POST',
       body: JSON.stringify({ name }), 
       headers: { 'Content-Type': 'application/json' }
-    })
+    });
     reloadProjects();
     $('.project-name').val('');
     $('#new-project-form').find('label').remove();
   } else {
-    $('#new-project-form').append(`<label>Name taken</label>`)
+    $('#new-project-form').append(`<label>Name taken</label>`);
   }
-}
+};
 
 const checkProjects = async (name) => {
-  const response = await fetch('/api/v1/projects')
+  const response = await fetch('/api/v1/projects');
   const projects = await response.json();
-  const projectNames = await projects.map( project => project.name )
-  return await projectNames.includes(name)
-}
+  const projectNames = await projects.map( project => project.name );
+  return await projectNames.includes(name);
+};
 
 const addPalette = () => {
   event.preventDefault();
@@ -119,7 +112,7 @@ const addPalette = () => {
   const colors = swatches.map( swatch => {
     const rgbColor = $(swatch).css("background-color");
     return hexMe(rgbColor);
-  })
+  });
   sendPaletteToDb(colors);
   reloadProjects();
   $('#new-palette').val('');
@@ -139,12 +132,11 @@ const sendPaletteToDb = async (colors) => {
         }), 
         headers: { 'Content-Type': 'application/json'}
       })
-      const id = await response.json();
-    } catch (error)# {
-      console.log(error);
+    } catch (error) {
+      throw error;
     }
   }
-}
+};
 
 const removePalette = async (id) => {
   try {
@@ -152,35 +144,33 @@ const removePalette = async (id) => {
       method: 'DELETE', 
       body: JSON.stringify({ id }), 
       headers: { 'Content-Type': 'application/json'}
-    })
-    const result = await response.json();
-    console.log(result)
+    });
   } catch (error) {
-    console.log(error);
+    throw error;
   }
-}
+};
 
 const loadSwatches = (array) => { 
   const swatches = $('.swatch').toArray();
   swatches.forEach( (swatch, index) => {
     $(swatch).css({ "background-color": `${array[index]}` });
-    $(swatch).find('p').text(`${array[index]}`)
-  })
-}
+    $(swatch).find('p').text(`${array[index]}`);
+  });
+};
 
 const reloadProjects = () => {
   $('select').empty();
   $('#projects').find('article').remove();
   loadProjects();
-}
+};
 
 const hexMe = (colorval) => {
-    var parts = colorval.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-    delete(parts[0]);
-    for (var i = 1; i <= 3; ++i) {
-        parts[i] = parseInt(parts[i]).toString(16);
-        if (parts[i].length == 1) parts[i] = '0' + parts[i];
-    }
-    color = '#' + parts.join('');
-    return color;
-}
+  var parts = colorval.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+  delete(parts[0]);
+  for (var index = 1; index <= 3; ++index) {
+    parts[index] = parseInt(parts[index]).toString(16);
+    if (parts[index].length == 1) parts[index] = '0' + parts[index];
+  }
+  const color = '#' + parts.join('');
+  return color;
+};
