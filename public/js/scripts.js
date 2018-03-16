@@ -27,6 +27,7 @@ const loadPalette = () => {
   swatches.forEach((swatch, index) => {
     if ( !$(swatch).is('.locked') ) {
       $(swatch).css({ "background-color": `${colorArray[index + 1]}` })
+      $(swatch).find('p').text(`${colorArray[index + 1]}`)
     }
   })
   $('#new-palette').val('');
