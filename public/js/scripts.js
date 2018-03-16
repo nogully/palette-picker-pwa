@@ -25,6 +25,7 @@ const loadPalette = () => {
       $(swatch).css({ "background-color": `${colorArray[index + 1]}` })
     }
   })
+  $('#new-palette').val('');
 }
 
 const loadProjects = async () => {
@@ -110,6 +111,8 @@ const addPalette = () => {
     return hexMe(rgbColor);
   })
   sendPaletteToDb(colors);
+  updateProjects();
+  $('#new-palette').val('');
 }
 
 const sendPaletteToDb = async (colors) => {
@@ -133,7 +136,6 @@ const sendPaletteToDb = async (colors) => {
       console.log(error);
     }
   }
-  
 }
 
 const hexMe = (colorval) => {
