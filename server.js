@@ -135,24 +135,14 @@ app.post('/api/v1/projects', (request, response) => {
       .status(422)
       .send({ error: `Expected format: { name: <String> }. You're missing a name.` });
   }
-
-  database('projects').where('name', request.params.name).select()
-    .then(rows => {
-      if (rows.length) {
-        response.status(409).json({ error: `Name taken` })
-      } else {
-        database('projects').insert({name: request.params.name}, 'id')
-          .then(projectIds => {
-            response.status(201).json({id: projectIds[0]})
-          })
-          .catch(error => {
-            response.status(500).json({ error });
-          })
-      }
+  database('projects').insert(project, 'id')
+    .then(projectArray => {
+      response.status(201).json({ name: project.name, id: projectArray[0] })
     })
     .catch(error => {
       response.status(500).json({ error });
     })
+    
 });
 
 app.listen(app.get('port'), () => {

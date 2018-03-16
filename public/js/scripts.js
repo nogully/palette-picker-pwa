@@ -90,15 +90,26 @@ const findProjectPalettes = async (id) => {
 const saveProject = async () => {
   event.preventDefault();
   const name = $('.project-name').val();
-  const response = await fetch('/api/v1/projects', {
-    method: 'POST',
-    body: JSON.stringify({ name }), 
-    headers: { 'Content-Type': 'application/json' }
-  })
-  const projectId = await response.json();
-  console.log(projectId)
-  reloadProjects();
-  $('.project-name').val('');
+  const exists = await checkProjects(name);
+  if (!exists) {
+    const response = await fetch('/api/v1/projects', {
+      method: 'POST',
+      body: JSON.stringify({ name }), 
+      headers: { 'Content-Type': 'application/json' }
+    })
+    reloadProjects();
+    $('.project-name').val('');
+    $('#new-project-form').find('label').remove();
+  } else {
+    $('#new-project-form').append(`<label>Name taken</label>`)
+  }
+}
+
+const checkProjects = async (name) => {
+  const response = await fetch('/api/v1/projects')
+  const projects = await response.json();
+  const projectNames = await projects.map( project => project.name )
+  return await projectNames.includes(name)
 }
 
 const addPalette = () => {
@@ -143,9 +154,9 @@ const loadSwatches = (array) => {
 }
 
 const reloadProjects = () => {
- $('select').empty();
- $('#projects').find('article').remove();
- loadProjects();
+  $('select').empty();
+  $('#projects').find('article').remove();
+  loadProjects();
 }
 
 const hexMe = (colorval) => {
