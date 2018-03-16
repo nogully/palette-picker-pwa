@@ -146,8 +146,8 @@ const sendPaletteToDb = async (colors) => {
 const loadSwatches = (array) => { 
   const swatches = $('.swatch').toArray();
   swatches.forEach( (swatch, index) => {
-    $(swatch).css({ "background-color": `${array[index + 1]}` });
-    $(swatch).val(array[index + 1]);
+    $(swatch).css({ "background-color": `${array[index]}` });
+    $(swatch).find('p').text(`${array[index]}`)
   })
 }
 
