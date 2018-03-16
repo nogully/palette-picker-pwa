@@ -4,7 +4,8 @@ $('.swatch').on('click', '.fas', function () {
   $(this).parent().toggleClass('locked');
   $(this).toggleClass('fa-lock-open').toggleClass('fa-lock');
 })
-$('.submit-button').on('click', () => saveProject())
+$('#save-project').on('click', () => saveProject());
+$('#save-palette').on('click', () => addPalette());
 
 const generateColors = () => {
   let colorArray = [];
@@ -24,6 +25,7 @@ const loadPalette = () => {
       $(swatch).css({ "background-color": `${colorArray[index + 1]}` })
     }
   })
+  $('#new-palette').val('');
 }
 
 const loadProjects = async () => {
@@ -31,12 +33,12 @@ const loadProjects = async () => {
   const projects = await response.json();
   projects.forEach( project => {
     makeMiniPalette(project.id);
-    $('select').append(`<option value="${project.name}">${project.name}</option>`)
+    $('select').append(`<option value="${project.id}" id=>${project.name}</option>`)
     $('#projects').append(`
-    <article class="mini-palette" id=${project.id}>
-      <p>${project.name}</p>
-    </article>
-  `)
+      <article class="mini-palette" id=${project.id}>
+        <h3>${project.name}</h3>
+      </article>
+    `)
   })
 }
 
@@ -99,4 +101,50 @@ const addProject = (name, id) => {
       <p>${name}</p>
     </article>
   `)
+}
+
+const addPalette = () => {
+  event.preventDefault();
+  const swatches = $('.swatch').toArray();
+  const colors = swatches.map( swatch => {
+    const rgbColor = $(swatch).css("background-color");
+    return hexMe(rgbColor);
+  })
+  sendPaletteToDb(colors);
+  updateProjects();
+  $('#new-palette').val('');
+}
+
+const sendPaletteToDb = async (colors) => {
+  const paletteName = $('#new-palette').val();
+  const projectId = $('select').val();
+  console.log(paletteName, projectId)
+  if (paletteName) {
+    try {
+      const response = await fetch('/api/v1/palettes', {
+        method: 'POST', 
+        body: JSON.stringify({
+          name: paletteName, 
+          colors: colors, 
+          project_id: projectId
+        }), 
+        headers: { 'Content-Type': 'application/json'}
+      })
+      const id = await response.json();
+      console.log(id)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+const hexMe = (colorval) => {
+    var parts = colorval.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+    delete(parts[0]);
+    for (var i = 1; i <= 3; ++i) {
+        parts[i] = parseInt(parts[i]).toString(16);
+        if (parts[i].length == 1) parts[i] = '0' + parts[i];
+    }
+    color = '#' + parts.join('');
+    return color;
 }
