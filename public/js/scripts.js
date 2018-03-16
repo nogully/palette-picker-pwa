@@ -140,7 +140,7 @@ const sendPaletteToDb = async (colors) => {
         headers: { 'Content-Type': 'application/json'}
       })
       const id = await response.json();
-    } catch (error) {
+    } catch (error)# {
       console.log(error);
     }
   }

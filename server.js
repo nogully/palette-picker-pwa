@@ -7,7 +7,7 @@ const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 
 app.use(bodyParser.json());
-app.set('port', process.env.PORT || 3000); //environmental var of port in production
+app.set('port', process.env.PORT || 3000); 
 
 app.use(express.static('public'));
 
@@ -26,33 +26,13 @@ app.get('/api/v1/palettes', (req, res) => {
 app.get('/api/v1/palettes/:id', (req, res) => {
   database('palettes').where('id', req.params.id).select()
     .then(palette => {
-      if (palette) {
+      if (palette.length) {
         res.status(200).json(palette)
-      } else
-      res.status(404).json({
-        error: `Could not find palette with id ${req.params.id}`
-      })
-    })
-    .catch(error => {
-      res.status(500).json({ error });
-    });
-})
-
-app.get('/api/v1/palettes/:id/colors', (req, res) => {
-  database('palettes').where('id', req.params.id).select()
-    .then(palette => {
-      if (palette) {
-        const colors = [ palette[0].color1, 
-                         palette[0].color2, 
-                         palette[0].color3, 
-                         palette[0].color4, 
-                         palette[0].color5
-                       ]
-        res.status(200).json(colors)
-      } else
-      res.status(404).json({
-        error: `Could not find palette with id ${req.params.id}`
-      })
+      } else {
+        res.status(404).json({
+          error: `Could not find palette with id ${req.params.id}`
+        })
+      }
     })
     .catch(error => {
       res.status(500).json({ error });
@@ -89,7 +69,13 @@ app.post('/api/v1/palettes', (request, response) => {
 app.delete('/api/v1/palettes/:id', (request, response) => {
   database('palettes').where('id', request.params.id).del()
     .then(id => {
-      response.status(202).json({id})
+      if (id) {
+        response.status(202).json({ id })
+      } else {
+        response.status(404).json({
+          error: `Could not find palette with id ${request.params.id}`
+        })
+      }
     })
     .catch(error => {
       response.status(500).json({ error });
@@ -102,22 +88,6 @@ app.get('/api/v1/projects', (req, res) => {
       res.status(200).json(projects);
     })
     .catch((error) => {
-      res.status(500).json({ error });
-    });
-})
-
-app.get('/api/v1/projects/:id', (req, res) => {
-  database('projects').where('id', req.params.id).select()
-    .then(projects => {
-      if (projects.length) {
-        res.status(200).json(projects);
-      } else {
-        res.status(404).json({ 
-          error: `Could not find project with id ${req.params.id}`
-        });
-      }
-    })
-    .catch(error => {
       res.status(500).json({ error });
     });
 })
