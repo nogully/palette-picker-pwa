@@ -6,6 +6,10 @@ $('.swatch').on('click', '.fas', function () {
 })
 $('#save-project').on('click', () => saveProject());
 $('#save-palette').on('click', () => addPalette());
+$('#projects').on('click', '.mini-swatch-wrapper', function () {
+  const paletteId = $(this).attr('id');
+  console.log(paletteId)
+})
 
 const generateColors = () => {
   let colorArray = [];
@@ -52,8 +56,8 @@ const makeMiniPalette = async (projectId) => {
         return array;
       }, []);
       colorArrays.forEach((array, index) => {
-        $(`#${projectId}`).append(`
-          <div class="mini-swatch-wrapper">
+        $(`#${projectId}.mini-palette`).append(`
+          <div class="mini-swatch-wrapper" id="${palettes[index].id}">
             <div class="mini-swatch" style="background-color:${array[0]};"></div>
             <div class="mini-swatch" style="background-color:${array[1]};"></div>
             <div class="mini-swatch" style="background-color:${array[2]};"></div>
