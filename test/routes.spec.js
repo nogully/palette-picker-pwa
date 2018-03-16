@@ -17,8 +17,8 @@ describe('Client Routes', () => {
       response.should.have.status(200);
       response.should.be.html;
     })
-    .catch(err => {
-      throw err;
+    .catch(error => {
+      throw error;
     });
   });
 
@@ -28,8 +28,8 @@ describe('Client Routes', () => {
     .then(response => {
       response.should.have.status(404);
     })
-    .catch(err => {
-      throw err;
+    .catch(error => {
+      throw error;
     });
   });
 });
@@ -59,8 +59,8 @@ describe('API Routes', () => {
         response.body.length.should.equal(1);
         response.body[0].should.have.property('name');
       })
-      .catch(err => {
-        throw err;
+      .catch(error => {
+        throw error;
       });
     });
   });
@@ -76,8 +76,8 @@ describe('API Routes', () => {
         response.body.length.should.equal(2);
         response.body[0].should.have.property('name');
       })
-      .catch(err => {
-        throw err;
+      .catch(error => {
+        throw error;
       });
     });
 
@@ -106,8 +106,8 @@ describe('API Routes', () => {
         response.body.should.have.property('name');
         response.body.name.should.equal('Lisa Frank Fan Page');
       })
-      .catch(err => {
-        throw err;
+      .catch(error => {
+        throw error;
       });
     });
 
@@ -136,8 +136,8 @@ describe('API Routes', () => {
         response.body.length.should.equal(2);
         response.body[0].should.have.property('name');
       })
-      .catch(err => {
-        throw err;
+      .catch(error => {
+        throw error;
       });
     });
   });
@@ -157,8 +157,8 @@ describe('API Routes', () => {
         response.body.should.have.property('name');
         response.body.name.should.equal('Sad Testing Face');
       })
-      .catch(err => {
-        throw err;
+      .catch(error => {
+        throw error;
       });
     });
 
@@ -217,8 +217,8 @@ describe('API Routes', () => {
         response.body.should.have.property('id');
         response.body.id.should.equal(1);
       })
-      .catch(err => {
-        throw err;
+      .catch(error => {
+        throw error;
       });
     });
 

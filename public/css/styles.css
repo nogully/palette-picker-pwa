@@ -4,7 +4,6 @@
 }
 
 body{
-  /*background: linear-gradient(#FFF, #DDD);*/
   background-image: url("../wood.jpg");
   background-repeat: repeat;
   display: flex;
