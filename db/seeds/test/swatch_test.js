@@ -1,13 +1,31 @@
-
 exports.seed = function(knex, Promise) {
-  // Deletes ALL existing entries
-  return knex('table_name').del()
-    .then(function () {
-      // Inserts seed entries
-      return knex('table_name').insert([
-        {id: 1, colName: 'rowValue1'},
-        {id: 2, colName: 'rowValue2'},
-        {id: 3, colName: 'rowValue3'}
-      ]);
-    });
+  return knex('palettes').del()
+    .then(() => knex('projects').del()) 
+
+    .then(() => {
+      return Promise.all([
+        
+        knex('projects').insert({
+          name: 'Magic Sparkles' }, 'id')
+        .then(project => {
+          return knex('palettes').insert([
+            { name: 'Unicorns', project_id: project[0], 
+              color1: '#FFF333',
+              color2: '#CCC111', 
+              color3: '#C45632', 
+              color4: '#345124', 
+              color5: '#859208' },
+            { name: 'Pandas', project_id: project[0],
+              color1: '#FFF333',
+              color2: '#CCC111', 
+              color3: '#C45632', 
+              color4: '#345124', 
+              color5: '#859208' }
+          ])
+        })
+        .then(() => console.log('Seeding complete!'))
+        .catch(error => console.log(`Error seeding data: ${error}`))
+      ]) 
+    })
+    .catch(error => console.log(`Error seeding data: ${error}`));
 };

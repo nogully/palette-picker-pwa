@@ -56,7 +56,7 @@ describe('API Routes', () => {
         response.should.have.status(200);
         response.should.be.json;
         response.body.should.be.a('array');
-        response.body.length.should.equal(3);
+        response.body.length.should.equal(1);
         response.body[0].should.have.property('name');
       })
       .catch(err => {
@@ -64,4 +64,5 @@ describe('API Routes', () => {
       });
     });
   });
+
 });
