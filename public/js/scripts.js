@@ -59,6 +59,7 @@ const makeMiniPalette = async (projectId) => {
       colorArrays.forEach((array, index) => {
         $(`#${projectId}.mini-palette`).append(`
           <div class="mini-swatch-wrapper" id="${palettes[index].id}" array="${array}">
+            <i class="far fa-trash-alt"></i>
             <div class="mini-swatch" style="background-color:${array[0]};"></div>
             <div class="mini-swatch" style="background-color:${array[1]};"></div>
             <div class="mini-swatch" style="background-color:${array[2]};"></div>
