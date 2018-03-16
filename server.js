@@ -77,7 +77,6 @@ app.post('/api/v1/palettes', (request, response) => {
                     color4: colors[3], 
                     color5: colors[4]
                     };
-  console.log(palette)
   database('palettes').insert(palette, 'id')
     .then(paletteArray => {
       response.status(201).json({name, project_id, colors, id: paletteArray[0]})
