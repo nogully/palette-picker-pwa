@@ -6,6 +6,10 @@ $('.swatch').on('click', '.fas', function () {
 })
 $('#save-project').on('click', () => saveProject());
 $('#save-palette').on('click', () => addPalette());
+$('#projects').on('click', '.mini-swatch-wrapper', function () {
+  const palette = $(this).attr('array');
+  loadSwatches(palette.split(','));
+})
 
 const generateColors = () => {
   let colorArray = [];
@@ -23,6 +27,7 @@ const loadPalette = () => {
   swatches.forEach((swatch, index) => {
     if ( !$(swatch).is('.locked') ) {
       $(swatch).css({ "background-color": `${colorArray[index + 1]}` })
+      $(swatch).find('p').text(`${colorArray[index + 1]}`)
     }
   })
   $('#new-palette').val('');
@@ -52,8 +57,8 @@ const makeMiniPalette = async (projectId) => {
         return array;
       }, []);
       colorArrays.forEach((array, index) => {
-        $(`#${projectId}`).append(`
-          <div class="mini-swatch-wrapper">
+        $(`#${projectId}.mini-palette`).append(`
+          <div class="mini-swatch-wrapper" id="${palettes[index].id}" array="${array}">
             <div class="mini-swatch" style="background-color:${array[0]};"></div>
             <div class="mini-swatch" style="background-color:${array[1]};"></div>
             <div class="mini-swatch" style="background-color:${array[2]};"></div>
@@ -85,22 +90,26 @@ const findProjectPalettes = async (id) => {
 const saveProject = async () => {
   event.preventDefault();
   const name = $('.project-name').val();
-  const response = await fetch('/api/v1/projects', {
-    method: 'POST',
-    body: JSON.stringify( {name} ), 
-    headers: { 'Content-Type': 'application/json' }
-  })
-  const projectId = await response.json();
-  addProject(name, projectId.id);
-  $('.project-name').val('');
+  const exists = await checkProjects(name);
+  if (!exists) {
+    const response = await fetch('/api/v1/projects', {
+      method: 'POST',
+      body: JSON.stringify({ name }), 
+      headers: { 'Content-Type': 'application/json' }
+    })
+    reloadProjects();
+    $('.project-name').val('');
+    $('#new-project-form').find('label').remove();
+  } else {
+    $('#new-project-form').append(`<label>Name taken</label>`)
+  }
 }
 
-const addProject = (name, id) => {
-  $('#projects').append(`
-    <article class="mini-palette" id=${id}>
-      <p>${name}</p>
-    </article>
-  `)
+const checkProjects = async (name) => {
+  const response = await fetch('/api/v1/projects')
+  const projects = await response.json();
+  const projectNames = await projects.map( project => project.name )
+  return await projectNames.includes(name)
 }
 
 const addPalette = () => {
@@ -111,14 +120,13 @@ const addPalette = () => {
     return hexMe(rgbColor);
   })
   sendPaletteToDb(colors);
-  updateProjects();
+  reloadProjects();
   $('#new-palette').val('');
 }
 
 const sendPaletteToDb = async (colors) => {
   const paletteName = $('#new-palette').val();
   const projectId = $('select').val();
-  console.log(paletteName, projectId)
   if (paletteName) {
     try {
       const response = await fetch('/api/v1/palettes', {
@@ -131,11 +139,24 @@ const sendPaletteToDb = async (colors) => {
         headers: { 'Content-Type': 'application/json'}
       })
       const id = await response.json();
-      console.log(id)
     } catch (error) {
       console.log(error);
     }
   }
+}
+
+const loadSwatches = (array) => { 
+  const swatches = $('.swatch').toArray();
+  swatches.forEach( (swatch, index) => {
+    $(swatch).css({ "background-color": `${array[index]}` });
+    $(swatch).find('p').text(`${array[index]}`)
+  })
+}
+
+const reloadProjects = () => {
+  $('select').empty();
+  $('#projects').find('article').remove();
+  loadProjects();
 }
 
 const hexMe = (colorval) => {
