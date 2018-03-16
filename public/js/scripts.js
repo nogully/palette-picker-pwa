@@ -32,7 +32,7 @@ const loadProjects = async () => {
   const projects = await response.json();
   projects.forEach( project => {
     makeMiniPalette(project.id);
-    $('select').append(`<option value="${project.name}">${project.name}</option>`)
+    $('select').append(`<option value="${project.id}" id=>${project.name}</option>`)
     $('#projects').append(`
       <article class="mini-palette" id=${project.id}>
         <h3>${project.name}</h3>
@@ -122,15 +122,13 @@ const sendPaletteToDb = async (colors) => {
         method: 'POST', 
         body: JSON.stringify({
           name: paletteName, 
-          color1: colors[0], 
-          color2: colors[1], 
-          color3: colors[2], 
-          color4: colors[3], 
-          color5: colors[4], 
+          colors: colors, 
           project_id: projectId
         }), 
         headers: { 'Content-Type': 'application/json'}
       })
+      const id = await response.json();
+      console.log(id)
     } catch (error) {
       console.log(error);
     }

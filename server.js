@@ -11,7 +11,7 @@ app.set('port', process.env.PORT || 3000); //environmental var of port in produc
 
 app.use(express.static('public'));
 
-app.locals.title = 'Palette Picker';
+app.locals.title = 'swatches';
 
 app.get('/api/v1/palettes', (req, res) => {
   database('palettes').select()
@@ -59,18 +59,32 @@ app.get('/api/v1/palettes/:id/colors', (req, res) => {
     });
 })
 
-app.post('/api/v1/palettes', (req, res) => {
-  const { name, colors, project_id } = req.body;
-  const palette = Object.assign({}, {id, 
-                            name, 
-                            color1: colors[0],
-                            color2: colors[1], 
-                            color3: colors[2], 
-                            color4: colors[3], 
-                            color5: colors[4],
-                            project_id })
-  app.locals.palettes.push(palette)
-  response.status(201).json({id, name, project_id})
+app.post('/api/v1/palettes', (request, response) => {
+  const userRequest = request.body;
+  for (let requiredParameter of ['name', 'colors', 'project_id']) {
+    if (!userRequest[requiredParameter]) {
+      return response
+        .status(422)
+        .send({ error: `Expected format: { name: <String>, colors: <Array>, project_id: <Number> }. You're missing a "${requiredParameter}" property.` });
+    }
+  }
+  const { name, colors, project_id } = userRequest;
+  const palette = { name, 
+                    project_id, 
+                    color1: colors[0],
+                    color2: colors[1], 
+                    color3: colors[2], 
+                    color4: colors[3], 
+                    color5: colors[4]
+                    };
+  console.log(palette)
+  database('palettes').insert(palette, 'id')
+    .then(paletteArray => {
+      response.status(201).json({name, project_id, colors, id: paletteArray[0]})
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    })
 })
 
 app.get('/api/v1/projects', (req, res) => {
