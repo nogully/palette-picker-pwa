@@ -130,21 +130,20 @@ app.get('/api/v1/projects/:id/palettes', (req, res) => {
 
 app.post('/api/v1/projects', (request, response) => {
   const project = request.body;
-  for (let requiredParameter of ['name']) {
-    if (!project[requiredParameter]) {
-      return response
-        .status(422)
-        .send({ error: `Expected format: { name: <String> }. You're missing a "${requiredParameter}" property.` });
-    }
+  if (!project.name) {
+    return response
+      .status(422)
+      .send({ error: `Expected format: { name: <String> }. You're missing a name.` });
   }
-  database('projects').where(project.name, request.params.id).select()
-    .then(project => {
-      if (project) {
-        res.status(409).json({ error: `Name taken` })
+
+  database('projects').where('name', request.params.name).select()
+    .then(rows => {
+      if (rows.length) {
+        response.status(409).json({ error: `Name taken` })
       } else {
-        database('projects').insert(project, 'id')
-          .then(project => {
-            response.status(201).json({id: project[0]})
+        database('projects').insert({name: request.params.name}, 'id')
+          .then(projectIds => {
+            response.status(201).json({id: projectIds[0]})
           })
           .catch(error => {
             response.status(500).json({ error });

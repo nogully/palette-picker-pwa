@@ -92,20 +92,13 @@ const saveProject = async () => {
   const name = $('.project-name').val();
   const response = await fetch('/api/v1/projects', {
     method: 'POST',
-    body: JSON.stringify( {name} ), 
+    body: JSON.stringify({ name }), 
     headers: { 'Content-Type': 'application/json' }
   })
   const projectId = await response.json();
-  addProject(name, projectId.id);
+  console.log(projectId)
+  reloadProjects();
   $('.project-name').val('');
-}
-
-const addProject = (name, id) => {
-  $('#projects').append(`
-    <article class="mini-palette" id=${id}>
-      <p>${name}</p>
-    </article>
-  `)
 }
 
 const addPalette = () => {
@@ -116,14 +109,13 @@ const addPalette = () => {
     return hexMe(rgbColor);
   })
   sendPaletteToDb(colors);
-  updateProjects();
+  reloadProjects();
   $('#new-palette').val('');
 }
 
 const sendPaletteToDb = async (colors) => {
   const paletteName = $('#new-palette').val();
   const projectId = $('select').val();
-  console.log(paletteName, projectId)
   if (paletteName) {
     try {
       const response = await fetch('/api/v1/palettes', {
@@ -136,7 +128,6 @@ const sendPaletteToDb = async (colors) => {
         headers: { 'Content-Type': 'application/json'}
       })
       const id = await response.json();
-      console.log(id)
     } catch (error) {
       console.log(error);
     }
@@ -149,6 +140,12 @@ const loadSwatches = (array) => {
     $(swatch).css({ "background-color": `${array[index]}` });
     $(swatch).find('p').text(`${array[index]}`)
   })
+}
+
+const reloadProjects = () => {
+ $('select').empty();
+ $('#projects').find('article').remove();
+ loadProjects();
 }
 
 const hexMe = (colorval) => {
