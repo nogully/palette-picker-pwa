@@ -1,8 +1,8 @@
 # Swatches
 
-An app that creates and saves color palettes (coolors.co clone)
+A progressive web app that creates and saves color palettes (coolors.co clone)
 
-![Swatches screenshot](./public/swatches1.png)  
+![Swatches screenshot](./public/swatches2.png)  
 
 ### Stack
 - jQuery
