@@ -1,26 +1,33 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+var cors = require('cors')
 
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
+
+const requireHTTPS = (req, res, next) => {
+ if (req.headers['x-forwarded-proto'] !== 'https') {
+  return res.redirect('https://' + req.get('host') + req.url);
+ }
+  next();
+}
+
+if (process.env.NODE_ENV === 'production') { 
+  app.use(requireHTTPS); 
+}
 
 app.use(bodyParser.json());
 app.set('port', process.env.PORT || 3000); 
 
 app.use(express.static('public'));
 
+app.use(cors())
+
 app.locals.title = 'swatches';
 
-app.use('*',( req ,res, next) => {
-  if(req.headers['x-forwarded-proto']!='https' && environment === 'production'){
-    res.redirect('https://swatch-saver.herokuapp.com'+req.url)
-  }
-  else {
-    next()
-  } 
-})
+
 
 app.get('/api/v1/palettes', (req, res) => {
   database('palettes').select()
