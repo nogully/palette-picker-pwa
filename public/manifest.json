@@ -1,28 +1,28 @@
 {
   "short_name": "Swatches",
   "name": "Swatch Saver",
-  "background_color": "ghostwhite",
-  "theme_color": "#74c7fd",
+  "background_color": "#CCC",
+  "theme_color": "ghostwhite",
   "display": "fullscreen",
   "icons": [
     {
-      "src": "img/icon-48.png",
-      "type": "image/png",
+      "src": "lib/palette.svg",
+      "type": "image/svg",
       "sizes": "48x48"
     },
     {
-      "src": "img/icon-96.png",
-      "type": "image/png",
+      "src": "lib/palette.svg",
+      "type": "image/svg",
       "sizes": "96x96"
     },
     {
-      "src": "img/icon-192.png",
-      "type": "image/png",
+      "src": "lib/palette.svg",
+      "type": "image/svg",
       "sizes": "192x192"
     },
     {
-      "src": "img/icon-512.png",
-      "type": "image/png",
+      "src": "lib/palette.svg",
+      "type": "image/svg",
       "sizes": "512x512"
     }
   ],

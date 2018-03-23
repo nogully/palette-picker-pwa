@@ -63,7 +63,7 @@ this.addEventListener('sync', event => {
   }
 
   if (event.tag === 'addPalette') {
-    event.waitUntil(postPendingMarkdowns()
+    event.waitUntil(postPendingPalettes()
       .then(responses => {
         self.clients.matchAll().then( clients => {
           clients[0].postMessage({type: 'palettes-synced'})
@@ -75,23 +75,23 @@ this.addEventListener('sync', event => {
 });
 
 const postPendingProjects = () => {
-  let markdownPromises = pendingProjects.map(project => {
+  let projectPromises = pendingProjects.map(project => {
     return fetch('/api/v1/projects', {
       method: 'POST',
       body: JSON.stringify(project), 
       headers: { 'Content-Type': 'application/json' }
     })
   })
-  return Promise.all(markdownPromises);
+  return Promise.all(projectPromises);
 };
 
 const postPendingPalettes = () => {
-  let markdownPromises = pendingProjects.map(project => {
-    return fetch('/api/v1/projects', {
+  let palettePromises = pendingPalettes.map(palette => {
+    return fetch('/api/v1/palette', {
       method: 'POST',
-      body: JSON.stringify(project), 
+      body: JSON.stringify(palette), 
       headers: { 'Content-Type': 'application/json' }
     })
   })
-  return Promise.all(markdownPromises);
+  return Promise.all(palettePromises);
 };
