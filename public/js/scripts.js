@@ -1,3 +1,14 @@
+// import {
+//   saveOfflineProject,
+//   saveOfflinePalette,
+//   loadOfflineProjects,
+//   loadOfflinePalettes,
+//   getSingleProject, 
+//   getSinglePalette, 
+//   setPendingProjectsToSynced,
+//   setPendingPalettesToSynced
+// } from '../indexedDB';
+
 $(document).ready(() => loadProjects());
 $('button').on('click', () => loadPalette());
 $('.swatch').on('click', '.fas', function () {
@@ -174,3 +185,17 @@ const hexMe = (colorval) => {
   const color = '#' + parts.join('');
   return color;
 };
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('../service-worker.js')
+      .then(registration => {
+        console.log('Service worker registration successful');
+
+      })
+      .catch(error => {
+        console.log('Service worker failed', error);
+
+      })
+  })
+}
